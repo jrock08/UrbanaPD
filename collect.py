@@ -26,16 +26,23 @@ for key in codes_to_query:
             all_data.extend(X)
 
 dat = pandas.DataFrame(data=all_data)
+
 dat['age_at_arrest'] = pandas.to_numeric(dat['age_at_arrest'])
 V = []
 for key in codes_to_query:
     print key
     sns.distplot(dat[dat['my_label'] == key]['age_at_arrest'], label=key)
-    #dat[dat['my_label'] == key]['age_at_arrest'])
 plt.legend()
 plt.show()
-#sns.distplot(V)
-#sns.distplot(dat[dat['my_label']=='bike']['age_at_arrest'])
+
+
+month_compare = ['bike', 'car_failure_to_yield', 'car_stop_sign', 'car_stop_light']
+dat['month_of_arrest'] = pandas.to_numeric(dat['month_of_arrest'])
+dat['year_of_arrest'] = pandas.to_numeric(dat['year_of_arrest'])
+for key in month_compare:
+    sns.distplot(dat[(dat['my_label'] == key) & (dat['year_of_arrest'] >= 2014) & (dat['year_of_arrest'] <= 2017)]['month_of_arrest'], bins=range(1,13), kde=False, label=key)
+plt.legend()
+plt.show()
 
 #fmt_data = {}
 #fmt_data['age'] = range(100)
